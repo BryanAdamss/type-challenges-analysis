@@ -35,4 +35,5 @@ const testKsTypeB: ks = 'b'
 const testKsTypeC: ks = 'c' // error
 
 // readonly
+// https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties
 // https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype
