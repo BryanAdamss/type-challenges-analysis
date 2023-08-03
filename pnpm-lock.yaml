@@ -1,4 +1,4 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 specifiers:
   '@type-challenges/utils': ^0.1.1
@@ -9,5 +9,5 @@ dependencies:
 packages:
 
   /@type-challenges/utils/0.1.1:
-    resolution: {integrity: sha1-GM4on7hMrxwT7uIRIm2/K8YZXtM=, tarball: https://artifacts.iflytek.com:443/artifactory/api/npm/npm-repo/@type-challenges/utils/-/utils-0.1.1.tgz}
+    resolution: {integrity: sha512-A7ljYfBM+FLw+NDyuYvGBJiCEV9c0lPWEAdzfOAkb3JFqfLl0Iv/WhWMMARHiRKlmmiD1g8gz/507yVvHdQUYA==}
     dev: false
