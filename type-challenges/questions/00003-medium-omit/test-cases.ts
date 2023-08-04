@@ -2,9 +2,10 @@ import type { Equal, Expect } from '@type-challenges/utils'
 
 type cases = [
   Expect<Equal<Expected1, MyOmit<Todo, 'description'>>>,
-  Expect<Equal<Expected2, MyOmit<Todo, 'description' | 'completed'>>>,
+  Expect<Equal<Expected2, MyOmit<Todo, 'description' | 'completed'>>>
 ]
 
+type A = MyOmit<Todo, 'description'>
 // @ts-expect-error
 type error = MyOmit<Todo, 'description' | 'invalid'>
 
