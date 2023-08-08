@@ -6,5 +6,5 @@ type cases = [
   Expect<Equal<Replace<'foobarbar', '', 'foo'>, 'foobarbar'>>,
   Expect<Equal<Replace<'foobarbar', 'bar', ''>, 'foobar'>>,
   Expect<Equal<Replace<'foobarbar', 'bra', 'foo'>, 'foobarbar'>>,
-  Expect<Equal<Replace<'', '', ''>, ''>>,
+  Expect<Equal<Replace<'', '', ''>, ''>>
 ]
