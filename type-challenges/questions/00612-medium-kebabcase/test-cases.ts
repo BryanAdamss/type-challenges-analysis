@@ -9,5 +9,9 @@ type cases = [
   Expect<Equal<KebabCase<'ABC'>, 'a-b-c'>>,
   Expect<Equal<KebabCase<'-'>, '-'>>,
   Expect<Equal<KebabCase<''>, ''>>,
-  Expect<Equal<KebabCase<'😎'>, '😎'>>,
+  Expect<Equal<KebabCase<'😎'>, '😎'>>
 ]
+
+type A = KebabCase<'FooBarBaz'>
+
+type AA = Uncapitalize<'A'>
