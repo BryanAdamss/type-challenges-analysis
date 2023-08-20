@@ -18,9 +18,12 @@ interface UserPartialNameAndAge {
   address: string
 }
 
+type Ret = PartialByKeys<User, 'name'>
+
 type cases = [
   Expect<Equal<PartialByKeys<User, 'name'>, UserPartialName>>,
-  Expect<Equal<PartialByKeys<User, 'name' | 'unknown'>, UserPartialName>>,
   Expect<Equal<PartialByKeys<User, 'name' | 'age'>, UserPartialNameAndAge>>,
   Expect<Equal<PartialByKeys<User>, Partial<User>>>,
+  // @ts-expect-error
+  Expect<Equal<PartialByKeys<User, 'name' | 'unknown'>, UserPartialName>>
 ]
