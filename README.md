@@ -842,7 +842,22 @@ type T1 = NonNullable<string[] | null | undefined>; // string[]
 
 ### Parameters<Type> - 获取函数类型的参数类型
 ```ts
+declare function f1(arg: { a: number; b: string }): void;
 
+type T0 = Parameters<() => string>; // []
+type T1 = Parameters<(s: string) => void>; // [s: string]
+type T2 = Parameters<<T>(arg: T) => T>; // [arg: unknown]
+type T3 = Parameters<typeof f1>;
+/**
+type T3 = [arg: {
+    a: number;
+    b: string;
+}]
+*/
+type T4 = Parameters<any>; // unknown[]
+type T5 = Parameters<never>;// never
+type T6 = Parameters<string>; // error
+type T7 = Parameters<Function>; // error
 ```
 
 ### ConstructorParameters<Type> - 获取构造函数类型的参数类型
