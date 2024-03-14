@@ -889,20 +889,98 @@ type T8 = ReturnType<Function>; // error any
 ```
 
 ### InstanceType<Type> - 获取构造函数类型的实例类型
+```ts
+class C {
+  x = 0;
+  y = 0;
+}
+
+type T0 = InstanceType<typeof C>; // C 
+type T1 = InstanceType<any>; // any
+type T2 = InstanceType<never>; // never
+type T3 = InstanceType<string>; // error any
+type T4 = InstanceType<Function>; // error any
+```
 
 ### ThisParameterType<Type> - 获取函数类型中的 `this` 参数类型
+```ts
+function toHex(this: Number) {
+  return this.toString(16);
+}
+
+function numberToString(n: ThisParameterType<typeof toHex> /** Number */) {
+  return toHex.apply(n);
+}
+```
 
 ### OmitThisParameter<Type> - 从函数类型中移除 `this` 参数
+```ts
+function toHex(this: Number) {
+  return this.toString(16);
+}
+
+const fiveToHex:/** () => string */ OmitThisParameter<typeof toHex> = toHex.bind(5);
+```
 
 ### ThisType<Type> - 用于指定函数中的 `this` 类型
+```ts
+/**
+* 这段 TypeScript 代码定义了一个 makeObject 函数
+* 该函数接受一个 ObjectDescriptor 类型的参数 desc，该类型包含两个属性：data 和 methods。
+* 其中，data 属性是一个泛型 D 类型的对象，而 methods 属性是一个泛型 M 类型的对象，同时约束了 methods 中的方法的 this 上下文类型为 D & M。
+* 在 makeObject 函数中，首先根据传入的 desc 参数初始化了 data 和 methods 对象。
+* 然后，通过展开运算符 { ...data, ...methods } 将这两个对象合并为一个新对象，并通过类型断言 as D & M 将其断言为类型 D & M，最后返回该新对象。
+* 通过调用 makeObject 函数，并传入包含 data 和 methods 的对象作为参数，我们可以创建一个具有指定数据和方法的对象。
+* 其中，特别值得注意的是，methods 中的方法可以在方法体中使用强类型的 this 上下文
+* 这是因为 methods 的类型声明中使用了 ThisType<D & M>，指明了方法中 this 的类型。
+* 这样，方法可以访问对象的数据属性，同时也能访问其他方法。
+ */
+type ObjectDescriptor<D, M> = {
+  data?: D;
+  methods?: M & ThisType<D & M>; // 指定methods中的this为D & M
+};
+
+function makeObject<D, M>(desc: ObjectDescriptor<D, M>): D & M {
+  let data: object = desc.data || {};
+  let methods: object = desc.methods || {};
+  return { ...data, ...methods } as D & M;
+}
+
+let obj = makeObject({
+  data: { x: 0, y: 0 },
+  methods: {
+    moveBy(dx: number, dy: number) {
+      this.x += dx; // Strongly typed this
+      this.y += dy; // Strongly typed this
+    },
+  },
+});
+
+obj.x = 10;
+obj.y = 20;
+obj.moveBy(5, 5);
+```
 
 ### Uppercase<StringType> - 将字符串转换为大写
+```ts
+type A = Uppercase<'hello'> // 'HELLO'
+```
 
 ### Lowercase<StringType> - 将字符串转换为小写
+```ts
+type B =  Lowercase<'HELLO'> // hello
+```
 
 ### Capitalize<StringType> - 将字符串首字母转换为大写
+```ts
+type C =  Capitalize<'hello'> // Hello
+```
 
 ### Uncapitalize<StringType> - 将字符串首字母转换为小写
+```ts
+type D =  Uncapitalize<'Hello'> // hello
+type E =  Uncapitalize<'HELLO'> // hELLO
+```
 
 ## 参考
 
