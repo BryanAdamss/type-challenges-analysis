@@ -861,8 +861,32 @@ type T7 = Parameters<Function>; // error
 ```
 
 ### ConstructorParameters<Type> - 获取构造函数类型的参数类型
+```ts
+type T0 = ConstructorParameters<ErrorConstructor>; // [message?: string | undefined]
+type T1 = ConstructorParameters<FunctionConstructor>; // string[]
+type T2 = ConstructorParameters<RegExpConstructor>; // [pattern: string | RegExp, flags?: string | undefined]
+class C {
+  constructor(a: number, b: string) {}
+}
+type T3 = ConstructorParameters<typeof C>; // [a: number, b: string]
+type T4 = ConstructorParameters<any>; // unknown[]
+type T5 = ConstructorParameters<Function>; // error
+```
 
 ### ReturnType<Type> - 获取函数类型的返回值类型
+```ts
+declare function f1(): { a: number; b: string };
+
+type T0 = ReturnType<() => string>; // string
+type T1 = ReturnType<(s: string) => void>; // void
+type T2 = ReturnType<<T>() => T>; // unknown
+type T3 = ReturnType<<T extends U, U extends number[]>() => T>; // number[]
+type T4 = ReturnType<typeof f1>; // { a: number; b: string;}
+type T5 = ReturnType<any>; // any
+type T6 = ReturnType<never>; // never
+type T7 = ReturnType<string>; // error any
+type T8 = ReturnType<Function>; // error any
+```
 
 ### InstanceType<Type> - 获取构造函数类型的实例类型
 
