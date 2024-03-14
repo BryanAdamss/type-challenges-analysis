@@ -751,10 +751,57 @@ type A = {
 ```
 
 ### Readonly<Type> - 将类型中的所有属性转换为只读属性
+```ts
+interface Todo {
+  title: string;
+}
+
+type A = Readonly<Todo>
+
+/**
+ type A = {
+    readonly title: string;
+}
+*/
+```
 
 ### Record<Keys, Type> - 创建一个具有指定键和值类型的对象
+```ts
+interface CatInfo {
+  age: number;
+  breed: string;
+}
+ 
+type CatName = "miffy" | "boris" | "mordred";
+
+type A  = Record<CatName, CatInfo> 
+
+/**
+type A = {
+    miffy: CatInfo;
+    boris: CatInfo;
+    mordred: CatInfo;
+}
+*/
+```
 
 ### Pick<Type, Keys> - 从类型中挑选指定的属性
+```ts
+interface Todo {
+  title: string;
+  description: string;
+  completed: boolean;
+}
+ 
+type TodoPreview = Pick<Todo, "title" | "completed">;
+
+/** 
+type TodoPreview = {
+    title: string;
+    completed: boolean;
+}
+*/
+```
 
 ### Omit<Type, Keys> - 从类型中排除指定的属性
 
