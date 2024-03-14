@@ -708,31 +708,83 @@ type c = b<a> // number
 
 ## 内置工具类型
 
-| 工具方法                     | 含义                                     | 基本示例                                  | 备注说明             |
-|------------------------------|------------------------------------------|------------------------------------------|----------------------|
-| Awaited<Type>               | 获取异步操作的返回类型                     | `type AsyncResult = Awaited<Promise<string>>;` |                      |
-| Partial<Type>               | 将类型中的所有属性转换为可选属性         | `type PartialUser = Partial<User>;`       |                      |
-| Required<Type>              | 将类型中的所有可选属性转换为必选属性     | `type RequiredUser = Required<PartialUser>;` |                     |
-| Readonly<Type>              | 将类型中的所有属性转换为只读属性         | `type ReadonlyUser = Readonly<User>;`     |                     |
-| Record<Keys, Type>          | 创建一个具有指定键和值类型的对象         | `const users: Record<string, User> = {};` |                     |
-| Pick<Type, Keys>            | 从类型中挑选指定的属性                   | `type PartialUser = Pick<User, 'name' \| 'age'>;` |                   |
-| Omit<Type, Keys>            | 从类型中排除指定的属性                   | `type PartialUser = Omit<User, 'id'>;`    |                     |
-| Exclude<UnionType, ExcludedMembers> | 从联合类型中排除指定的成员         | `type StringOrNumber = Exclude<string \| number, number>;` |              |
-| Extract<Type, Union>        | 从联合类型中提取指定的成员               | `type StringOrNumber = Extract<string \| number, string>;` |               |
-| NonNullable<Type>            | 从类型中排除 `null` 和 `undefined`       | `type NonNullableUser = NonNullable<User>;` |                     |
-| Parameters<Type>             | 获取函数类型的参数类型                   | `type FnParams = Parameters<(x: number, y: string) => void>;` |              |
-| ConstructorParameters<Type>  | 获取构造函数类型的参数类型               | `type CtorParams = ConstructorParameters<typeof MyClass>;` |               |
-| ReturnType<Type>             | 获取函数类型的返回值类型                 | `type FnResult = ReturnType<(x: number, y: string) => number>;` |            |
-| InstanceType<Type>           | 获取构造函数类型的实例类型               | `type Instance = InstanceType<typeof MyClass>;` |                       |
-| ThisParameterType<Type>      | 获取函数类型中的 `this` 参数类型         | `function callWithThis(this: { x: number }): void;`<br>`type This = ThisParameterType<typeof callWithThis>;` | |
-| OmitThisParameter<Type>      | 从函数类型中移除 `this` 参数             | `function callWithoutThis(this: { x: number }): void;`<br>`type WithoutThis = OmitThisParameter<typeof callWithoutThis>;` | |
-| ThisType<Type>               | 用于指定函数中的 `this` 类型             | `function bind<T>(fn: (this: T) => void): void;`<br>`type BoundFn = ThisType<typeof bind>;` | |
-| Uppercase<StringType>        | 将字符串转换为大写                       | `type UpperStr = Uppercase<'hello'>;`     |                      |
-| Lowercase<StringType>        | 将字符串转换为小写                       | `type LowerStr = Lowercase<'HELLO'>;`     |                      |
-| Capitalize<StringType>       | 将字符串首字母转换为大写                 | `type CapStr = Capitalize<'hello'>;`      |                      |
-| Uncapitalize<StringType>     | 将字符串首字母转换为小写                 | `type UncapStr = Uncapitalize<'Hello'>;`  |                      |
+### Awaited<Type> - 获取异步操作的返回类型
 
+```ts
+type A = Awaited<Promise<string>>; // string
+type B = Awaited<Promise<Promise<number>>>; //number
+type C = Awaited<boolean | Promise<number>>; // boolean | number
+```
 
+### Partial<Type> - 将类型中的所有属性转换为可选属性
+```ts
+interface Todo {
+  title: string;
+  description: string;
+}
+
+type A = Partial<Todo>
+
+/**
+type A = {
+    title?: string | undefined;
+    description?: string | undefined;
+}
+ */
+```
+
+### Required<Type> - 将类型中的所有可选属性转换为必选属性
+```ts
+interface Props {
+  a?: number;
+  b?: string;
+}
+
+type A = Required<Props>
+
+/**
+type A = {
+    a: number;
+    b: string;
+}
+*/
+```
+
+### Readonly<Type> - 将类型中的所有属性转换为只读属性
+
+### Record<Keys, Type> - 创建一个具有指定键和值类型的对象
+
+### Pick<Type, Keys> - 从类型中挑选指定的属性
+
+### Omit<Type, Keys> - 从类型中排除指定的属性
+
+### Exclude<UnionType, ExcludedMembers> - 从联合类型中排除指定的成员
+
+### Extract<Type, Union> - 从联合类型中提取指定的成员
+
+### NonNullable<Type> - 从类型中排除 `null` 和 `undefined`
+
+### Parameters<Type> - 获取函数类型的参数类型
+
+### ConstructorParameters<Type> - 获取构造函数类型的参数类型
+
+### ReturnType<Type> - 获取函数类型的返回值类型
+
+### InstanceType<Type> - 获取构造函数类型的实例类型
+
+### ThisParameterType<Type> - 获取函数类型中的 `this` 参数类型
+
+### OmitThisParameter<Type> - 从函数类型中移除 `this` 参数
+
+### ThisType<Type> - 用于指定函数中的 `this` 类型
+
+### Uppercase<StringType> - 将字符串转换为大写
+
+### Lowercase<StringType> - 将字符串转换为小写
+
+### Capitalize<StringType> - 将字符串首字母转换为大写
+
+### Uncapitalize<StringType> - 将字符串首字母转换为小写
 
 ## 参考
 
