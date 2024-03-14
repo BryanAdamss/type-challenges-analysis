@@ -804,14 +804,46 @@ type TodoPreview = {
 ```
 
 ### Omit<Type, Keys> - 从类型中排除指定的属性
+```ts
+interface Todo {
+  title: string;
+  description: string;
+  completed: boolean;
+  createdAt: number;
+}
+ 
+type TodoPreview = Omit<Todo, "description">;
+
+/**
+type TodoPreview = {
+    title: string;
+    completed: boolean;
+    createdAt: number;
+}
+*/
+```
 
 ### Exclude<UnionType, ExcludedMembers> - 从联合类型中排除指定的成员
+```ts
+type T0 = Exclude<"a" | "b" | "c", "a">; // "b" | "c"
+type T1 = Exclude<"a" | "b" | "c", "a" | "b">; // "c"
+```
 
 ### Extract<Type, Union> - 从联合类型中提取指定的成员
+```ts
+type T0 = Extract<"a" | "b" | "c", "a">; // "a"
+```
 
 ### NonNullable<Type> - 从类型中排除 `null` 和 `undefined`
+```ts
+type T0 = NonNullable<string | number | undefined>; // string | number
+type T1 = NonNullable<string[] | null | undefined>; // string[]
+```
 
 ### Parameters<Type> - 获取函数类型的参数类型
+```ts
+
+```
 
 ### ConstructorParameters<Type> - 获取构造函数类型的参数类型
 
