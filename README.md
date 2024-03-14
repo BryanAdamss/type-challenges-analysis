@@ -113,7 +113,9 @@ anotherPet.meow(); // succeeds
 anotherPet.bark(); // succeeds
 ```
 
-## 用 `T[P]`获取类型
+## 类型体操技巧
+
+#### 用 `T[P]`获取类型
 
 ```ts
 type Person = { age: number; name: string; alive: boolean };
@@ -121,7 +123,7 @@ type Person = { age: number; name: string; alive: boolean };
 type Age = Person["age"]; // number
 ```
 
-## 用`keyof`获取对象 key 组成的联合类型
+#### 用`keyof`获取对象 key 组成的联合类型
 
 ```ts
 type Obj = {
@@ -132,7 +134,7 @@ type Obj = {
 type ObjKeys = keyof Obj // 'hello' | 'test'
 ```
 
-## 用`keyof`获取数组索引组成的类型
+### 用`keyof`获取数组索引组成的类型
 
 ```ts
 // 数组本质是一个以索引为key的对象
@@ -146,7 +148,7 @@ type ffrr = ffr<typeof ff> // readonly ["0","1"]
 type ffrr2 = ffr<typeof ff2> // number[]
 ```
 
-## 在对象中用`in`遍历联合类型
+### 在对象中用`in`遍历联合类型
 
 ```ts
 type Obj = {
@@ -168,7 +170,7 @@ K = 'age'  // 第二次迭代结果
 K = 'sex'  // 第三次迭代结果
 ```
 
-## 用`T[number]`获取数组值组成的联合类型并用`in`遍历
+### 用`T[number]`获取数组值组成的联合类型并用`in`遍历
 
 ```ts
 const ff = ['hello', 'world'] as const
@@ -178,7 +180,7 @@ type fffr<T extends readonly any[]> = { [p in T[number]]: p }
 type fffrr = fffr<typeof ff> // {  hello: "hello";world: "world"; }
 ```
 
-## 用`typeof`获取值空间的类型
+### 用`typeof`获取值空间的类型
 
 ```ts
 const a = [1,2,3] // 值空间
@@ -188,7 +190,7 @@ const f = [1, 2, 'me'] as const
 type g = typeof f // readonly [1,2,'me']
 ```
 
-## 用`const`或`as const`做类型收缩
+### 用`const`或`as const`做类型收缩
 
 ```ts
 // const 类型字面量会自动收缩
@@ -220,7 +222,7 @@ var dd = { test: 1, hello: 'world' } as const
 type ddr = typeof dd // { readonly test: 1; readonly hello: "world"; }
 ```
 
-## 用`+`和`-`做属性添加删除
+### 用`+`和`-`做属性添加删除
 
 ```ts
 type Required<T> = {
@@ -235,7 +237,7 @@ type Person = {
 type result = Required<Person>
 ```
 
-## 用`extends`做类型约束
+### 用`extends`做类型约束
 
 ```ts
 // 类型约束,U 必须为联合类型 T 的子集
@@ -245,7 +247,7 @@ U extends keyof T
 function Test<T extends string[]>(arg1:T){}
 ```
 
-## 用`extends`做条件分支
+### 用`extends`做条件分支
 
 ```ts
 // 基本形式,类似三元表达式
@@ -258,7 +260,7 @@ type result3 = [1, 2, 3] extends { length: number; } ? true : false   // true
 type result4 = [1, 2, 3] extends Array<number> ? true : false         // true
 ```
 
-## 分布式条件类型
+### 分布式条件类型
 
 ```ts
 // 当用 extends 做条件分支时,若左右有一个为联合类型时,会触发分布式条件类型,类似数学中的分配律
@@ -278,7 +280,7 @@ step2:  ('age' extends 'name'|'address'|'sex' ? 'age' : never)   => never
 result: 'name' | never => 'name'
 ```
 
-## 用`infer`做推断占位
+### 用`infer`做推断占位
 
 ```ts
 // infer 本质是延迟推导,可做推导占位用,等到真正推导成功后，它能准确的返回正确的类型
@@ -293,13 +295,13 @@ const add = (a: number, b: number): number => {
 type result = ReturnType<typeof add>
 ```
 
-## 用解构语法和 reset 操作符获取数组首个元素
+### 用解构语法和 reset 操作符获取数组首个元素
 
 ```ts
 type First<T extends any[]> = T extends [/** 首个 */infer Fir, /** reset 操作符代表后续类型全部暂存到 Res 中 */...infer Res] ? Fir : n
 ```
 
-## 判断是否 never 的固定范式
+### 判断是否 never 的固定范式
 
 ```ts
 type MyIsNever<T> = [T] extends [never] ? true : false
@@ -310,7 +312,7 @@ type A = MyIsNever2<'str'> //str
 type B = MyIsNever2<never> // never 因为MyIsNever2<never> 中的 never 实际上是一个空的联合类型，一项都没有，所以 T extends ... 过程实际上被整体跳过了，所以最后的结果就是 never。
 ```
 
-## 关闭分布式条件类型的方法
+### 关闭分布式条件类型的方法
 
 - 在要判断的联合类型上加上`[]`
 - https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
@@ -319,7 +321,7 @@ type B = MyIsNever2<never> // never 因为MyIsNever2<never> 中的 never 实际�
 type MyIsNever<T> = [T] extends [never] ? true : false
 ```
 
-## 遍历联合类型自身的固定范式
+### 遍历联合类型自身的固定范式
 
 ```ts
 /** 直接遍历联合类型自身的范式,extends 自身即可 */
@@ -335,7 +337,7 @@ type MyItrUnion<T> = T extends T ? [T] : never
 type C = MyItrUnion<'A' | 'B'> // ['A'] | ['B']
 ```
 
-## 解构数组的联合类型也会产生分布式条件类型效果
+### 解构数组的联合类型也会产生分布式条件类型效果
 
 ```ts
 type D = [1, 2] | [3, 4]
@@ -346,7 +348,7 @@ type F = [true, ...D, ...E]
 // [true, 1, 2, "a", "b"] | [true, 1, 2, "c", "d"] | [true, 3, 4, "a", "b"] | [true, 3, 4, "c", "d"]
 ```
 
-## 利用递归构造循环
+### 利用递归构造循环
 
 - ts中没有循环语句,需要通过递归来模拟额循环
 
@@ -359,7 +361,7 @@ type LengthOfString1<
 	: T['length'] 
 ```
 
-## 在方法中为参数的类型设置默认值
+### 在方法中为参数的类型设置默认值
 
 - 类似js 可以给类型参数设置默认值
 
@@ -372,7 +374,7 @@ type LengthOfString1<
 	: T['length'] 
 ```
 
-## 利用reset 操作符号用数组中添加元素
+### 利用reset 操作符号用数组中添加元素
 
 - ts 类型操作中没有 push 语法,可用 reset 操作符模拟
 
@@ -385,7 +387,7 @@ type LengthOfString1<
 	: T['length'] 
 ```
 
-## 涉及数字和运算,则构造数组并利用`T['length']`数组长度来做运算
+### 涉及数字和运算,则构造数组并利用`T['length']`数组长度来做运算
 
 ```ts
 type LengthOfString1<
@@ -396,7 +398,7 @@ type LengthOfString1<
 	: T['length'] /** 知识点3,通过将字符转为数组,获取 length 获取长度 */
 ```
 
-## 用reset 操作符给数组降维
+### 用reset 操作符给数组降维
 
 ```ts
 type MyFlatten<T extends unknown[], A extends unknown[] = []> = T extends [
@@ -411,7 +413,7 @@ type MyFlatten<T extends unknown[], A extends unknown[] = []> = T extends [
 	: A
 ```
 
-## 使用字符串模板将 number 转为 string
+### 使用字符串模板将 number 转为 string
 
 ```ts
 type Absolute<T extends number | string | bigint> =
@@ -422,7 +424,7 @@ type AB = -1_000_000n
 type BC = `${AB}` // "-1000000"
 ```
 
-## 使用模板字符串将 string 转 number
+### 使用模板字符串将 string 转 number
 
 ```ts
 /** 知识点,字符转数字,https://devblogs.microsoft.com/typescript/announcing-typescript-4-8-beta/#improved-inference-for-infer-types-in-template-string-types */
@@ -431,7 +433,7 @@ type ParseInt<T extends string> = T extends `${infer Digit extends number}`
 	: n
 ```
 
-## 使用模板字符串将 boolean 转换为 string
+### 使用模板字符串将 boolean 转换为 string
 
 ```ts
 /** 解法:https://github.com/type-challenges/type-challenges/issues/14094 */
@@ -441,7 +443,7 @@ type Flip<T extends Record<string, string | number | boolean>> = {
 }
 ```
 
-## extends 分支中可以用联合类型操作符|直接拼接
+### extends 分支中可以用联合类型操作符|直接拼接
 
 ```ts
 type StringToUnion<T extends string> = T extends `${infer F}${infer Rest}`
@@ -449,7 +451,7 @@ type StringToUnion<T extends string> = T extends `${infer F}${infer Rest}`
 	: never
 ```
 
-## 使用内置类型转大小写
+### 使用内置类型转大小写
 
 ```ts
 type KebabCase<S extends string> = S extends `${infer S1}${infer S2}`
@@ -459,7 +461,7 @@ type KebabCase<S extends string> = S extends `${infer S1}${infer S2}`
 	: S
 ```
 
-## 判断两个类型相等的固定范式
+### 判断两个类型相等的固定范式
 
 ```ts
 // 参考https://github.com/microsoft/TypeScript/issues/27024#issuecomment-421529650
@@ -468,7 +470,7 @@ type Equals<X, Y> =
     (<T>() => T extends Y ? 1 : 2) ? true : false;
 ```
 
-## 如何判断空对象
+### 如何判断空对象
 
 ```ts
 /** 知识点,没有属性的对象不能用{}判断, 需要用{ [key: string]: never }*/
@@ -477,7 +479,7 @@ type t4 = { name: 'test' } extends { [key: string]: never } ? true : false // fa
 type t5 = {} extends { [key: string]: never } ? true : false // true
 ```
 
-## 如何判断是否联合类型
+### 如何判断是否联合类型
 
 - 非联合类型排除掉自身后只剩下 never,可通过此判断是否联合类型
 
@@ -493,7 +495,7 @@ type IsUnion<T, U = T> = [T] extends [never] /** 排除 never */
 : never
 ```
 
-## 如何给 key 重新起名
+### 如何给 key 重新起名
 
 - 通过 as 进行 key-remapping ,在key-remapping 中可以用 extends ,infer等
 - 常用在对象 key 遍历时,对 key 重新映射,示例1
@@ -515,7 +517,7 @@ type Config = EventConfig<SquareEvent | CircleEvent>
 // }
 ```
 
-## 利用ts 中的 global type 简化书写
+### 利用ts 中的 global type 简化书写
 
 - `PropertyKey`是 `ts` 中的`global type`,等价于`string | number | symbol`
 - `index-signature` 的类型是 `string | number | symbol`
@@ -535,14 +537,14 @@ type RemoveIndexSignature<T, P = PropertyKey> = {
 	: never]: T[Key]
 ```
 
-## 模板字符串+infer 可以实现类似正则的效果
+### 模板字符串+infer 可以实现类似正则的效果
 
 ```ts
 /** 知识点,模板字符串+infer 可实现类似正则匹配效果 */
 type CheckPercentageSign<S> = S extends `${infer N}%` ? [N, '%'] : [S, '']
 ```
 
-## infer推断出来的类型可以当参数传递
+### infer推断出来的类型可以当参数传递
 
 ```ts
 type CheckSign<Sign> = Sign extends '+' | '-' ? Sign : never
@@ -557,7 +559,7 @@ type PercentageParser<A extends string> = A extends `${CheckSign<
 	: ['', ...CheckPercentageSign<A>]
 ```
 
-## 模板字符串中可以用 string 代表任意字符
+### 模板字符串中可以用 string 代表任意字符
 
 ```ts
 /** 知识点,模板字符串匹配时,可不用 infer 接收,用string表明后面是 string 即可 */
@@ -566,7 +568,7 @@ type StartsWith<T extends string, U extends string> = T extends `${U}${string}`
 	: f
 ```
 
-## 如何让交叉类型在悬浮时直接展开
+### 如何让交叉类型在悬浮时直接展开
 
 ```ts
 // 方法1,通过遍历展开
@@ -589,14 +591,14 @@ type ExpandRecursively<T> = T extends object
 type CCCC = Omit<AAAA,never> // // 悬浮CCCC时,显示的是展开的{test:3,name:4}
 ```
 
-## 对象每个键的值转联合类型
+### 对象每个键的值转联合类型
 
 ```ts
 /** 知识点,对象转联合,用 T[keyof T] */
 type ObjectToUnion<T> = T[keyof T]
 ```
 
-## 数组转联合类型
+### 数组转联合类型
 
 ```ts
 /** 知识点,数组转联合类型用下标*/
@@ -605,7 +607,7 @@ type ObjectToUnion<T> = T[keyof T]
 type ArrToUnion<T> = T extends any[] ? T[number] : T
 ```
 
-## 强制某类型(转换)为特定类型
+### 强制某类型(转换)为特定类型
 
 ```ts
 /** 知识点,强制某个类型必须为 类型 A,否则原样返回,请用 T & A */
@@ -618,7 +620,7 @@ type AA = MustString<true> // never
 type BBB = MustString<'hello'> // 'hello'
 ```
 
-## 利用infer + | 将字符串转为联合类型
+### 利用infer + | 将字符串转为联合类型
 
 ```ts
 /** 知识点,利用 infer + | 将字符串转换为联合类型,"AB"->""|"A"|"B" */
@@ -627,7 +629,7 @@ type StringToUnion2<S> = S extends `${infer F}${infer R}`
 	: S
 ```
 
-## 判断是否元组
+### 判断是否元组
 
 - 数组和元组的区别之一就是数组的长度是不固定的,类型为 number,而元组长度是固定的,类型为具体的数字
 
@@ -651,7 +653,7 @@ type IsTuple<T> = /** 判断never */ [T] extends [never]
 /** 所以不能调换 */
 ```
 
-## infer 时可以直接约束推断的值为某类型
+### infer 时可以直接约束推断的值为某类型
 
 ```ts
 type Join<T extends any[], U extends number | string> = T extends [
@@ -665,14 +667,14 @@ type Join<T extends any[], U extends number | string> = T extends [
 	: ''
 ```
 
-## 如何遍历数组
+### 如何遍历数组
 
 ```ts
 // 递归+infer 取值
 type A<T> = T extends [infer F,...infer R]?A<R>:never
 ```
 
-## 如何从后向前遍历数组
+### 如何从后向前遍历数组
 
 ```ts
 type LastIndexOf<T extends unknown[], U> = T extends [
@@ -687,7 +689,7 @@ type LastIndexOf<T extends unknown[], U> = T extends [
 : -1
 ```
 
-## 如何将数字取整
+### 如何将数字取整
 
 ```ts
 /** 思路:先转成字符串,再和 bigint 比较 */
@@ -695,7 +697,7 @@ type LastIndexOf<T extends unknown[], U> = T extends [
 type Integer<T extends number> = `${T}` extends `${bigint}` ? T : never
 ```
 
-## 如何获取返回类型值的原始类型
+### 如何获取返回类型值的原始类型
 
 ```ts
 /** 知识点,ts中的 valueOf 可以返回类型值的原始类型 */
@@ -703,6 +705,34 @@ type a = 3
 type b<T> = T extends { valueOf: () => infer R } ? R : T
 type c = b<a> // number
 ```
+
+## 内置工具类型
+
+| 工具方法                     | 含义                                     | 基本示例                                  | 备注说明             |
+|------------------------------|------------------------------------------|------------------------------------------|----------------------|
+| Awaited<Type>               | 获取异步操作的返回类型                     | `type AsyncResult = Awaited<Promise<string>>;` |                      |
+| Partial<Type>               | 将类型中的所有属性转换为可选属性         | `type PartialUser = Partial<User>;`       |                      |
+| Required<Type>              | 将类型中的所有可选属性转换为必选属性     | `type RequiredUser = Required<PartialUser>;` |                     |
+| Readonly<Type>              | 将类型中的所有属性转换为只读属性         | `type ReadonlyUser = Readonly<User>;`     |                     |
+| Record<Keys, Type>          | 创建一个具有指定键和值类型的对象         | `const users: Record<string, User> = {};` |                     |
+| Pick<Type, Keys>            | 从类型中挑选指定的属性                   | `type PartialUser = Pick<User, 'name' \| 'age'>;` |                   |
+| Omit<Type, Keys>            | 从类型中排除指定的属性                   | `type PartialUser = Omit<User, 'id'>;`    |                     |
+| Exclude<UnionType, ExcludedMembers> | 从联合类型中排除指定的成员         | `type StringOrNumber = Exclude<string \| number, number>;` |              |
+| Extract<Type, Union>        | 从联合类型中提取指定的成员               | `type StringOrNumber = Extract<string \| number, string>;` |               |
+| NonNullable<Type>            | 从类型中排除 `null` 和 `undefined`       | `type NonNullableUser = NonNullable<User>;` |                     |
+| Parameters<Type>             | 获取函数类型的参数类型                   | `type FnParams = Parameters<(x: number, y: string) => void>;` |              |
+| ConstructorParameters<Type>  | 获取构造函数类型的参数类型               | `type CtorParams = ConstructorParameters<typeof MyClass>;` |               |
+| ReturnType<Type>             | 获取函数类型的返回值类型                 | `type FnResult = ReturnType<(x: number, y: string) => number>;` |            |
+| InstanceType<Type>           | 获取构造函数类型的实例类型               | `type Instance = InstanceType<typeof MyClass>;` |                       |
+| ThisParameterType<Type>      | 获取函数类型中的 `this` 参数类型         | `function callWithThis(this: { x: number }): void;`<br>`type This = ThisParameterType<typeof callWithThis>;` | |
+| OmitThisParameter<Type>      | 从函数类型中移除 `this` 参数             | `function callWithoutThis(this: { x: number }): void;`<br>`type WithoutThis = OmitThisParameter<typeof callWithoutThis>;` | |
+| ThisType<Type>               | 用于指定函数中的 `this` 类型             | `function bind<T>(fn: (this: T) => void): void;`<br>`type BoundFn = ThisType<typeof bind>;` | |
+| Uppercase<StringType>        | 将字符串转换为大写                       | `type UpperStr = Uppercase<'hello'>;`     |                      |
+| Lowercase<StringType>        | 将字符串转换为小写                       | `type LowerStr = Lowercase<'HELLO'>;`     |                      |
+| Capitalize<StringType>       | 将字符串首字母转换为大写                 | `type CapStr = Capitalize<'hello'>;`      |                      |
+| Uncapitalize<StringType>     | 将字符串首字母转换为小写                 | `type UncapStr = Uncapitalize<'Hello'>;`  |                      |
+
+
 
 ## 参考
 
