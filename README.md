@@ -1,7 +1,7 @@
 
 # 知识点
 
-## TS 类型和集合理论
+## TS 类型和集合理论基础
 
 - 集合论是TS类型的一个理论基础
 - 每个类型都代表一类有相同特征的值
@@ -112,6 +112,8 @@ anotherPet.eat(); // 成功,类似取了并集
 anotherPet.meow(); // succeeds
 anotherPet.bark(); // succeeds
 ```
+
+- [TS内置工具类型](#内置工具类型)
 
 ## 类型体操技巧
 
